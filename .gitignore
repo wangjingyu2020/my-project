@@ -1,0 +1,86 @@
+# -----------------------------------
+# 🔹 通用规则
+# -----------------------------------
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+*.swp
+*.swo
+*.swn
+*.lock
+!.gitkeep
+
+# -----------------------------------
+# 🔹 Node.js / React 前端
+# -----------------------------------
+node_modules/
+build/
+dist/
+.env
+.env.local
+.env.production
+.npmrc
+.yarn/
+.pnpm-store/
+coverage/
+*.cache/
+public/static/
+.vscode/
+
+# -----------------------------------
+# 🔹 Laravel / PHP
+# -----------------------------------
+vendor/
+storage/
+bootstrap/cache/
+*.log
+*.sqlite
+*.sqlite3
+composer.lock
+public/hot
+public/storage
+
+# -----------------------------------
+# 🔹 ASP.NET Core / C#
+# -----------------------------------
+bin/
+obj/
+.vs/
+*.suo
+*.user
+*.pdb
+*.dll
+*.exe
+*.log
+*.cache
+appsettings.json
+appsettings.Development.json
+
+# -----------------------------------
+# 🔹 Docker
+# -----------------------------------
+docker-compose.override.yml
+*.pid
+logs/
+tmp/
+*.tar
+*.cache
+.env
+.envrc
+.dockerignore
+
+# -----------------------------------
+# 🔹 JetBrains IDE (IntelliJ / WebStorm / Rider)
+# -----------------------------------
+.idea/
+*.iml
+out/
+*.ipr
+*.iws
+
+# -----------------------------------
+# 🔹 macOS / Windows 特定
+# -----------------------------------
+*.DS_Store
+Thumbs.db
