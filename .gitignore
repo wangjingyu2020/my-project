@@ -32,14 +32,12 @@ public/static/
 # 🔹 Laravel / PHP
 # -----------------------------------
 vendor/
-storage/
 bootstrap/cache/
 *.log
 *.sqlite
 *.sqlite3
 composer.lock
 public/hot
-public/storage
 
 # -----------------------------------
 # 🔹 ASP.NET Core / C#
