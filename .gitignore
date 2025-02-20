@@ -52,8 +52,6 @@ obj/
 *.exe
 *.log
 *.cache
-appsettings.json
-appsettings.Development.json
 
 # -----------------------------------
 # 🔹 Docker
