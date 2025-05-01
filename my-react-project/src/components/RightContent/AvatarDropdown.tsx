@@ -102,12 +102,12 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
           {
             key: 'center',
             icon: <UserOutlined />,
-            label: '个人中心',
+            label: 'center',
           },
           {
             key: 'settings',
             icon: <SettingOutlined />,
-            label: '个人设置',
+            label: 'settings',
           },
           {
             type: 'divider' as const,
@@ -117,7 +117,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: '退出登录',
+      label: 'logout',
     },
   ];
 
