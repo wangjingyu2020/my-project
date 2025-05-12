@@ -6,8 +6,6 @@ use App\Services\Impl\AuthService;
 use App\Repositories\IUserRepository;
 use App\Repositories\Impl\UserRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Models\User;
-
 
 
 class AppServiceProvider extends ServiceProvider

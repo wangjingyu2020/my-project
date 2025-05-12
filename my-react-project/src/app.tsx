@@ -20,14 +20,6 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    // try {
-    //   const msg = await queryCurrentUser({
-    //     skipErrorHandler: true,
-    //   });
-    //   return msg.data;
-    // } catch (error) {
-    //   history.push(loginPath);
-    // }
     return undefined;
   };
   const { location } = history;
@@ -87,7 +79,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ],
     menuHeaderRender: undefined,
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

@@ -87,7 +87,6 @@ const Skill: React.FC = () => {
             />
           </Col>
 
-          {/* Skill Learning Intensity Chart - 右侧 */}
           <Col span={12}>
             <TechChart
               skillsHistoryData={filteredHistory.map((history) => ({

@@ -3,7 +3,6 @@
 namespace App\Services\Impl;
 
 use App\Repositories\IUserRepository;
-use App\Repositories\UserRepository;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Hash;

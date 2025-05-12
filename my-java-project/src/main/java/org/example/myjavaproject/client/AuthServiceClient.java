@@ -9,9 +9,6 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 授权RPC调用
- */
 @Service
 public class AuthServiceClient {
     private final WebClient webClient;
@@ -37,9 +34,9 @@ public class AuthServiceClient {
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
                 .doOnError(e -> {
-                    Map.of("message", "认证失败","status", 401);
+                    Map.of("message", "Authentication failed", "status", 401);
                 })
-                .defaultIfEmpty(Map.of("message", "认证失败")); // ✅ 处理空响应，返回默认值
+                .defaultIfEmpty(Map.of("message", "Authentication failed")); // ✅ Handles empty response, returns default value
     }
 
 
