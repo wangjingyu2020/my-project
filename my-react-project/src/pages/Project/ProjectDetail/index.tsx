@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useModel } from "@umijs/max";
 import MarkdownViewer from "@/components/Markdown/Markdown";
 import { motion } from "framer-motion";
+import dayjs from "dayjs";
 
 const { Title, Paragraph } = Typography;
 
@@ -11,6 +12,19 @@ const ProjectDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { projectData, loading } = useModel("project");
   const project = projectData.find((p) => p.id === Number(id));
+
+
+const getRawReadmeUrlFromGitUrl = (gitUrl: string) => {
+  const cleanUrl = gitUrl.replace(/\.git$/, "");
+  const match = cleanUrl.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)$/);
+
+  if (!match) return null;
+
+  const [_, username, repo] = match;
+  return `https://raw.githubusercontent.com/${username}/${repo}/refs/heads/main/README.md`;
+};
+
+
 
   if (loading) {
     return (
@@ -68,7 +82,9 @@ const ProjectDetail: React.FC = () => {
           <Divider style={{ color: "#1890ff" }}>Project Milestones</Divider>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <Timeline mode="left" style={{ marginBottom: 10 }}>
-              <Timeline.Item>2025/04/28 - Project Kickoff</Timeline.Item>
+              <Timeline.Item>
+                {dayjs(project.startDate).format("YYYY-MM-DD")} - Project Kickoff
+              </Timeline.Item>              
               <Timeline.Item>{new Date().toISOString().split('T')[0]} - Project Review</Timeline.Item>
             </Timeline>
           </motion.div>
@@ -81,7 +97,7 @@ const ProjectDetail: React.FC = () => {
               boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.08)",
             }}
           >
-            <MarkdownViewer file="https://raw.githubusercontent.com/wangjingyu2020/my-project/refs/heads/main/README.md" />
+            <MarkdownViewer file={getRawReadmeUrlFromGitUrl(project.githubUrl) || ""} />
           </Card>
         </Card>
       </div>

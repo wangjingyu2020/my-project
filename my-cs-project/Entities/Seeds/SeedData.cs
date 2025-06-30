@@ -8,6 +8,9 @@ namespace my_cs_project.Entities.Seeds
 {
     public static class SeedData
     {
+        static int userId = 1; // User ID 1
+
+
         public static void Initialize(PortfolioDbContext context)
         {
 
@@ -44,10 +47,16 @@ namespace my_cs_project.Entities.Seeds
                     new Technology { Name = ".NET Core", Type = "Framework", TechCategoryId = backendCategory.Id },
                     new Technology { Name = "Java", Type = "Language", TechCategoryId = backendCategory.Id },
                     new Technology { Name = "Spring Cloud", Type = "Framework", TechCategoryId = backendCategory.Id },
+                    new Technology { Name = "Springboot", Type = "Framework", TechCategoryId = backendCategory.Id },
+
                     new Technology { Name = "PHP", Type = "Language", TechCategoryId = backendCategory.Id },
                     new Technology { Name = "Laravel", Type = "Framework", TechCategoryId = backendCategory.Id },
                     new Technology { Name = "MySQL", Type = "Database", TechCategoryId = backendCategory.Id },
                     new Technology { Name = "PostgreSQL", Type = "Database", TechCategoryId = backendCategory.Id },
+                    new Technology { Name = "C++", Type = "Language", TechCategoryId = backendCategory.Id },
+                    new Technology { Name = "Qt", Type = "Framework", TechCategoryId = backendCategory.Id },
+
+
 
                     new Technology { Name = "Azure", Type = "Cloud Service", TechCategoryId = devopsCategory.Id },
                     new Technology { Name = "AWS", Type = "Cloud Service", TechCategoryId = devopsCategory.Id },
@@ -61,14 +70,13 @@ namespace my_cs_project.Entities.Seeds
             // ✅ Add skills for user
             if (!context.Skills.Any())
             {
-                var userId = 1; // Assign skills to User ID 1
                 var allTechnologies = context.Technologies.ToList();
 
                 foreach (var tech in allTechnologies)
                 {
                     // Determine proficiency level
                     var proficiency = "Intermediate"; // Default
-                    if (new[] { "HTML", "CSS", "JavaScript", "Vue", "Java", "Spring Cloud", "MySQL", "PostgreSQL", "Linux", "Windows", "Docker",
+                    if (new[] { "HTML", "CSS", "JavaScript", "Vue", "Java", "Spring Cloud", "Springboot", "MySQL", "PostgreSQL", "Linux", "Windows", "Docker",
                     "C#", ".NET Core", "Azure", "AWS", "React" }.Contains(tech.Name))
                     {
                         proficiency = "Experienced";
@@ -87,7 +95,7 @@ namespace my_cs_project.Entities.Seeds
                     // ✅ Insert skill history based on defined year ranges
                     var skillYears = new List<int>();
 
-                    if (new[] { "HTML", "CSS", "JavaScript", "Vue", "Java", "Spring Cloud", "MySQL", "PostgreSQL", "Linux", "Windows", "Docker" }.Contains(tech.Name))
+                    if (new[] { "HTML", "CSS", "JavaScript", "Vue", "Java", "Spring Cloud", "Springboot", "MySQL", "PostgreSQL", "Linux", "Windows", "Docker" }.Contains(tech.Name))
                     {
                         skillYears = new List<int> { 2021, 2022, 2023 };
                     }
@@ -95,7 +103,7 @@ namespace my_cs_project.Entities.Seeds
                     {
                         skillYears = new List<int> { 2023, 2024, 2025 };
                     }
-                    else if (new[] { "PHP", "Flutter" , "Laravel", "TypeScript" }.Contains(tech.Name))
+                    else if (new[] { "PHP", "Flutter" , "Laravel", "TypeScript", "C++", "Qt" }.Contains(tech.Name))
                     {
                         skillYears = new List<int> { 2024, 2025 };
                     }
@@ -117,21 +125,31 @@ namespace my_cs_project.Entities.Seeds
             // ✅ Add project details
             if (!context.Projects.Any(p => p.Name == "Portfolio"))
             {
-                context.Projects.Add(new Project
-                {
-                    Name = "Portfolio",
-                    GithubUrl = "https://github.com/wangjingyu2020/my-project.git",
-                    StartDate = new DateTime(2025, 4, 27), // ✅ Set start dateD
-                    Description = "A Portfolio project using  various technologies"
-                });
+                context.Projects.AddRange(
+                    new Project
+                    {
+                        Name = "Portfolio",
+                        GithubUrl = "https://github.com/wangjingyu2020/my-project.git",
+                        StartDate = new DateTime(2025, 4, 27),
+                        Description = "A portfolio project using various technologies"
+                    },
+                    new Project
+                    {
+                        Name = "WellMini",
+                        GithubUrl = "https://github.com/wangjingyu2020/WellMini.git",
+                        StartDate = new DateTime(2025, 6, 30),
+                        Description = "A Qt-based activity tracking app with real-time charts and cloud sync"
+                    },
+                    new Project
+                    {
+                        Name = "Exchange",
+                        GithubUrl = "https://github.com/wangjingyu2020/exchange.git",
+                        StartDate = new DateTime(2025, 6, 15),
+                        Description = "Design an endpoint for users to fetch exchange rates."
+                    }
+                );
 
                 context.SaveChanges();
-
-
-
-
-
-
 
             }
 
@@ -139,7 +157,7 @@ namespace my_cs_project.Entities.Seeds
             var portfolioProject = context.Projects.FirstOrDefault(p => p.Name == "Portfolio");
             if (portfolioProject != null)
             {
-                // ✅ Get the technology IDs for the relevant technologies
+                // ✅ Get the technology IDs for the relevant technologies   
                 var technologyIds = context.Technologies
                     .Where(t => new[] { "HTML", "CSS", "JavaScript", "React", "C#", ".NET Core", "Java",
                             "Spring Cloud", "PHP", "Laravel", "MySQL", "Docker" }.Contains(t.Name))
@@ -164,17 +182,78 @@ namespace my_cs_project.Entities.Seeds
                 context.SaveChanges(); // ✅ Persist changes
             }
 
-            if (!context.UsersProjects.Any())
+
+            var wellMiniProject = context.Projects.FirstOrDefault(p => p.Name == "WellMini");
+            if (wellMiniProject != null)
             {
-                context.UsersProjects.Add(new UserProject
+                var techIds = context.Technologies
+                    .Where(t => new[] {"Qt", "C++"}.Contains(t.Name))
+                    .Select(t => t.Id)
+                    .ToList();
+
+                foreach (var techId in techIds)
                 {
-                    UserId = 1,
-                    ProjectId = portfolioProject.Id,
-                });
+                    if (!context.ProjectsTechnologies.Any(pt => pt.ProjectId == wellMiniProject.Id && pt.TechnologyId == techId))
+                    {
+                        context.ProjectsTechnologies.Add(new ProjectTechnology
+                        {
+                            ProjectId = wellMiniProject.Id,
+                            TechnologyId = techId,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+                }
 
                 context.SaveChanges();
-
             }
+
+            var exchangeProject = context.Projects.FirstOrDefault(p => p.Name == "Exchange");
+            if (exchangeProject != null)
+            {
+                var techIds = context.Technologies
+                    .Where(t => new[] { "Java", "Springboot" }.Contains(t.Name))
+                    .Select(t => t.Id)
+                    .ToList();
+
+                foreach (var techId in techIds)
+                {
+                    if (!context.ProjectsTechnologies.Any(pt => pt.ProjectId == exchangeProject.Id && pt.TechnologyId == techId))
+                    {
+                        context.ProjectsTechnologies.Add(new ProjectTechnology
+                        {
+                            ProjectId = exchangeProject.Id,
+                            TechnologyId = techId,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+
+
+
+            var projectIds = context.Projects
+                .Where(p => new[] { "Portfolio", "WellMini", "Exchange" }.Contains(p.Name))
+                .Select(p => p.Id)
+                .ToList();
+
+
+            foreach (var projectId in projectIds)
+            {
+                if (!context.UsersProjects.Any(up => up.UserId == userId && up.ProjectId == projectId))
+                {
+                    context.UsersProjects.Add(new UserProject
+                    {
+                        UserId = userId,
+                        ProjectId = projectId
+                    });
+                }
+            }
+
+            context.SaveChanges();
 
         }
     }
