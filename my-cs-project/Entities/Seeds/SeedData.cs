@@ -146,7 +146,25 @@ namespace my_cs_project.Entities.Seeds
                         GithubUrl = "https://github.com/wangjingyu2020/exchange.git",
                         StartDate = new DateTime(2025, 6, 15),
                         Description = "Design an endpoint for users to fetch exchange rates."
-                    }
+                    },
+
+                     new Project
+                     {
+                         Name = "flutterlev",
+                         GithubUrl = "https://github.com/wangjingyu2020/flutterlev.git",
+                         StartDate = new DateTime(2025, 7, 27),
+                         Description = "A simple flutter app"
+                     },
+
+                      new Project
+                      {
+                          Name = "vuelev",
+                          GithubUrl = "https://github.com/wangjingyu2020/vuelev.git",
+                          StartDate = new DateTime(2025, 7, 27),
+                          Description = "A simple vue app"
+                      }
+
+
                 );
 
                 context.SaveChanges();
@@ -234,9 +252,61 @@ namespace my_cs_project.Entities.Seeds
             }
 
 
+            var flutterProject = context.Projects.FirstOrDefault(p => p.Name == "flutterlev");
+            if (flutterProject != null)
+            {
+                var techIds = context.Technologies
+                    .Where(t => new[] { "Flutter" }.Contains(t.Name))
+                    .Select(t => t.Id)
+                    .ToList();
+
+                foreach (var techId in techIds)
+                {
+                    if (!context.ProjectsTechnologies.Any(pt => pt.ProjectId == flutterProject.Id && pt.TechnologyId == techId))
+                    {
+                        context.ProjectsTechnologies.Add(new ProjectTechnology
+                        {
+                            ProjectId = flutterProject.Id,
+                            TechnologyId = techId,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+
+            var vueProject = context.Projects.FirstOrDefault(p => p.Name == "vuelev");
+            if (vueProject != null)
+            {
+                var techIds = context.Technologies
+                    .Where(t => new[] { "Vue" }.Contains(t.Name))
+                    .Select(t => t.Id)
+                    .ToList();
+
+                foreach (var techId in techIds)
+                {
+                    if (!context.ProjectsTechnologies.Any(pt => pt.ProjectId == vueProject.Id && pt.TechnologyId == techId))
+                    {
+                        context.ProjectsTechnologies.Add(new ProjectTechnology
+                        {
+                            ProjectId = vueProject.Id,
+                            TechnologyId = techId,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+            }
+
+
+
 
             var projectIds = context.Projects
-                .Where(p => new[] { "Portfolio", "WellMini", "Exchange" }.Contains(p.Name))
+                .Where(p => new[] { "Portfolio", "WellMini", "Exchange", "flutterlev", "vuelev" }.Contains(p.Name))
                 .Select(p => p.Id)
                 .ToList();
 
